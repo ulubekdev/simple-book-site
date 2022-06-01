@@ -56,4 +56,22 @@ export default async ({ sequelize }) => {
             audio: true,
         }
     ])
+
+    await sequelize.models.Store.bulkCreate([
+        {
+            user_id: 1,
+            book_id: 2,
+            quantity: 3,
+        },
+        {
+            user_id: 2,
+            book_id: 3,
+            quantity: 2,
+        },
+        {
+            user_id: 3,
+            book_id: 1,
+            quantity: 1,
+        }
+    ]);
 }

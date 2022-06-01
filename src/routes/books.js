@@ -9,8 +9,8 @@ router.get('/books/search', controller.getBooksBySearch);
 router.get('/books/electron', controller.getElectronBooks);
 router.get('/books/audio', controller.getAudioBooks);
 
-router.get('/books/liked', checkToken, controller.getBooksLiked);
 router.post('/books', checkToken, controller.addBook);
+router.post('/books/store', checkToken, controller.storeBook);
 router.put('/books/:book_id', checkToken, controller.updateBook);
 router.delete('/books/:book_id', checkToken, controller.deleteBook);
 router.put('/books/:book_id/liked', checkToken, controller.likeBook);

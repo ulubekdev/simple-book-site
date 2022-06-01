@@ -29,29 +29,6 @@ const getBooksBySearch = async (req, res) => {
 };
 
 
-const getBooksLiked = async (req, res) => {
-    const user = await req.models.User.findOne({
-        where: {
-            user_id: req.userId
-        }
-    });
-
-    const books = await req.models.Book.findAll({
-        where: {
-            book_id: {
-                [Op.in]: user.liked_books
-            }
-        }
-    });
-
-    res.send({
-        status: 200,
-        message: 'Books fetched successfully',
-        data: books
-    });
-    
-};
-
 const getElectronBooks = async (req, res) => {
     const books = await req.models.Book.findAll({
         where: {
@@ -215,15 +192,13 @@ const unlikeBook = async (req, res) => {
         });
     });
 
-}
+};
 
 export default {
     getBooks,
     getElectronBooks,
     getAudioBooks,
     getBooksBySearch,
-    getBooksLiked,
-
 
     addBook,
     updateBook,

@@ -29,7 +29,30 @@ const GET = async (req, res) => {
         message: 'Users fetched successfully',
         data: users
     });
-}
+};
+
+const LIKEDBOOKS = async (req, res) => {
+    const user = await req.models.User.findOne({
+        where: {
+            user_id: req.userId
+        }
+    });
+
+    const books = await req.models.Book.findAll({
+        where: {
+            book_id: {
+                [Op.in]: user.liked_books
+            }
+        }
+    });
+
+    res.send({
+        status: 200,
+        message: 'Books fetched successfully',
+        data: books
+    });
+    
+};
 
 const LOGIN = async (req, res) => {
     const user = await req.models.User.findOne({
@@ -82,6 +105,61 @@ const MYBOOKS = async (req, res) => {
             data: null
         });
     }
+};
+
+const STOREDBOOKS = async (req, res) => {
+    const user = await req.models.User.findOne({
+        where: {
+            user_id: req.userId
+        }
+    });
+
+    if (user) {
+        const books = await req.models.Store.findAll({
+            where: {
+                user_id: user.user_id
+            }
+        });
+
+        res.send({
+            status: 200,
+            message: 'Books fetched successfully',
+            data: books
+        });
+    } else {
+        res.send({
+            status: 401,
+            message: 'No books found',
+            data: null
+        });
+    }
+};
+
+const ADDSTORE = async (req, res) => {
+    const user = await req.models.User.findOne({
+        where: {
+            user_id: req.userId
+        }
+    });
+
+    if (user) {
+        const book = await req.models.Store.create({
+            user_id: user.user_id,
+            book_id: req.body.book_id
+        });
+
+        res.send({
+            status: 200,
+            message: 'Book added successfully',
+            data: book
+        });
+    } else {
+        res.send({
+            status: 401,
+            message: 'No books found',
+            data: null
+        });
+    }
 }
 
 
@@ -89,5 +167,8 @@ export default {
     REGISTER,
     GET,
     LOGIN,
-    MYBOOKS
+    MYBOOKS,
+    LIKEDBOOKS,
+    STOREDBOOKS,
+    ADDSTORE
 }
